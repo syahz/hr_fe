@@ -23,7 +23,7 @@ const publicRoutes = ['/unauthorized', '/feedback']
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
-  const refreshToken = request.cookies.get('refresh_token')?.value
+  const refreshToken = request.cookies.get('hr_refresh_token')?.value
   const userRole = request.cookies.get('user_role')?.value as keyof typeof roleHomeRoutes | undefined
 
   // Cek apakah rute saat ini adalah salah satu dari rute yang perlu proteksi

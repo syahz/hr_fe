@@ -21,7 +21,7 @@ const Index = () => {
         console.log(data)
         setAccessToken(data.accessToken)
         toast.success('Login berhasil!')
-        // router.push('/admin')
+        router.push('/admin')
       } catch (err) {
         console.error(err)
         toast.error('Login gagal, silakan coba lagi.')
