@@ -13,10 +13,11 @@ const nextConfig: NextConfig = {
     domains: ['placehold.co']
   },
   async rewrites() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'https://api.hr.bmuconnect.id/api'
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:4002/api/:path*'
+        destination: `${apiUrl}/:path*`
       }
     ]
   }
