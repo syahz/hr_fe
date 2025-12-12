@@ -36,12 +36,12 @@ export function middleware(request: NextRequest) {
   if (!refreshToken && isProtectedRoute) {
     // Ambil URL Portal dan Client ID dari environment variable
     // Pastikan Anda sudah set env var ini di .env.local atau config Vercel/Server
-    const portalUrl = process.env.API_PORTAL_URL || 'http://localhost:4000/api'
+    const portalUrl = process.env.API_PORTAL_URL || 'https://api.portal.bmuconnect.id/api'
     const clientId = process.env.CLIENT_ID || 'app_feedback'
 
     // Tentukan mau balik ke mana setelah login di portal (Halaman Frontend Callback Anda)
     // request.nextUrl.origin akan otomatis mengambil http://localhost:3000 atau domain production
-    const redirectUri = encodeURIComponent(`${request.nextUrl.origin}/auth/callback`)
+    const redirectUri = encodeURIComponent(`https://hr.bmuconnect.id/auth/callback`)
 
     // Susun URL lengkap ke endpoint authorize Portal
     const ssoRedirectUrl = `${portalUrl}/auth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`
