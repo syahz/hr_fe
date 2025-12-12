@@ -102,3 +102,15 @@ export const RoleSearchConfig = {
   searchButtonText: 'Search',
   resetButtonText: 'Reset'
 }
+
+export const SppSearchConfig: SearchConfig = {
+  placeholder: 'Cari unit, bulan, atau tahun...',
+  searchButtonText: 'Search',
+  resetButtonText: 'Reset',
+  // Optional: presets for filters; can be wired later to dynamic options
+  filters: [
+    { key: 'unit_id', placeholder: 'Semua Unit', options: [] },
+    { key: 'month', placeholder: 'Semua Bulan', options: [] },
+    { key: 'year', placeholder: 'Semua Tahun', options: [] }
+  ]
+}

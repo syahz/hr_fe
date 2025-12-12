@@ -19,7 +19,7 @@ const roleSpecificRoutes = ['/admin', '/user']
 // Rute yang bisa diakses SEMUA user yang sudah login
 const sharedProtectedRoutes = ['/account']
 
-const publicRoutes = ['/unauthorized', '/feedback']
+const publicRoutes = ['/unauthorized']
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
