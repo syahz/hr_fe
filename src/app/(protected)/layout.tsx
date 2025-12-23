@@ -25,7 +25,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     // --- PERBAIKAN LOGIKA OTORISASI ---
     let isAuthorized = false
     if (pathname.startsWith('/admin')) {
-      isAuthorized = user.role === 'Admin'
+      isAuthorized = user.role === 'Admin' || user.role === 'Staff'
     } else if (pathname.startsWith('/user')) {
       isAuthorized = USER_ROLES.includes(user.role)
     } else if (pathname.startsWith('/account')) {

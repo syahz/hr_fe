@@ -18,7 +18,19 @@ export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
-    minimumFractionDigits: 0, // Tidak menampilkan angka di belakang koma
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount)
+}
+
+export function formatCurrencyTable(amount: number): string {
+  if (isNaN(amount)) {
+    return 'Rp 0'
+  }
+
+  return new Intl.NumberFormat('id-ID', {
+    currency: 'IDR',
+    minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(amount)
 }

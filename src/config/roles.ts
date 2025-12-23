@@ -1,7 +1,6 @@
 export const USER_ROLES = [
-  'Staff',
   'Manajer Keuangan',
-  'GM',
+  'General Manager',
   'General Affair',
   'Kadiv Keuangan',
   'Direktur Operasional',

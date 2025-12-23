@@ -1,6 +1,13 @@
 // Types and mappers for Surat Perintah Pembayaran (SPP)
 
+export interface SppParams {
+  page?: number
+  limit?: number
+  search?: string
+}
+
 export interface CreateSppRequest {
+  spp_letter?: string
   upah: number
   bantuan_dana: number
   lembur: number
@@ -21,7 +28,11 @@ export interface CreateSppRequest {
   total_tagihan_perusahaan: number
   total_tagihan_bpjs_ketenagakerjaan: number
   piutang: number
+  keterangan_piutang?: string
   hutang: number
+  keterangan_hutang?: string
+  bonus: number
+  keterangan_bonus?: string
   unit_id: string
   month: number
   year: number
@@ -31,6 +42,7 @@ export type UpdateSppRequest = Partial<CreateSppRequest>
 
 export type SppResponse = {
   id: string
+  spp_letter?: string
   unit: { id: string; name: string; code: string }
   upah: number
   bantuan_dana: number
@@ -52,17 +64,11 @@ export type SppResponse = {
   total_tagihan_perusahaan: number
   total_tagihan_bpjs_ketenagakerjaan: number
   piutang: number
+  keterangan_piutang?: string
   hutang: number
+  keterangan_hutang?: string
+  bonus: number
+  keterangan_bonus?: string
   month: number
   year: number
-}
-
-export type GetAllSppResponse = {
-  spp: SppResponse[]
-  pagination: {
-    totalData: number
-    page: number
-    limit: number
-    totalPage: number
-  }
 }

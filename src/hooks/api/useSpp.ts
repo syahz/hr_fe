@@ -2,12 +2,23 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createSpp, updateSpp, deleteSpp, getSpp, listSpp } from '@/services/SuratPerintahPembayaranServices'
-import type { CreateSppRequest, UpdateSppRequest, GetAllSppResponse, SppResponse } from '@/types/api/spp'
+import type { CreateSppRequest, UpdateSppRequest, SppResponse, SppParams } from '@/types/api/spp'
+import { ApiError } from '@/types/api/api'
 
-export function useListSpp(params: { page?: number; limit?: number; unit_id?: string; year?: number; month?: number }) {
-  return useQuery<GetAllSppResponse, Error>({
+export function useListSpp(params: SppParams = {}) {
+  return useQuery({
     queryKey: ['spp', params],
-    queryFn: () => listSpp(params)
+    queryFn: () => listSpp(params),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: (failureCount, error) => {
+      const apiError = error as ApiError
+      if (apiError.code && ['401', '403', '404'].includes(apiError.code)) {
+        return false
+      }
+      return failureCount < 3
+    },
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 20000)
   })
 }
 
@@ -20,32 +31,33 @@ export function useGetSpp(id: string) {
 }
 
 export function useCreateSpp() {
-  const qc = useQueryClient()
-  return useMutation<SppResponse, Error, CreateSppRequest>({
-    mutationFn: (payload) => createSpp(payload),
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: CreateSppRequest) => createSpp(data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['spp'] })
+      queryClient.invalidateQueries({ queryKey: ['spp'] })
     }
   })
 }
 
-export function useUpdateSpp(id: string) {
-  const qc = useQueryClient()
-  return useMutation<SppResponse, Error, UpdateSppRequest>({
-    mutationFn: (payload) => updateSpp(id, payload),
+export function useUpdateSpp(SppId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: UpdateSppRequest) => updateSpp(SppId, data as UpdateSppRequest),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['spp'] })
-      qc.invalidateQueries({ queryKey: ['spp', id] })
+      queryClient.invalidateQueries({ queryKey: ['spp'] })
+      queryClient.invalidateQueries({ queryKey: ['spp', SppId] })
     }
   })
 }
 
 export function useDeleteSpp() {
-  const qc = useQueryClient()
-  return useMutation<{ ok: boolean }, Error, string>({
-    mutationFn: (id) => deleteSpp(id),
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteSpp(id),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['spp'] })
+      queryClient.invalidateQueries({ queryKey: ['spp'] })
     }
   })
 }

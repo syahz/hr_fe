@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { NavUsers } from '@/components/layout/NavUser'
 import { NavAdmins } from '@/components/layout/NavAdmin'
 import { NavProfile } from '@/components/layout/NavProfile'
-import { Home, Users, ShieldCheck, LayoutDashboard, University, UserRoundCheck } from 'lucide-react'
+import { Home, Users, ShieldCheck, LayoutDashboard, University, UserRoundCheck, CardSim } from 'lucide-react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenuButton, SidebarRail, useSidebar } from '@/components/ui/sidebar'
 import { USER_ROLES } from '@/config/roles'
 
@@ -30,11 +30,6 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
         icon: Home
       },
       {
-        name: 'Dashboard SLA',
-        url: '/admin/dashboard-ho',
-        icon: UserRoundCheck
-      },
-      {
         name: 'Users',
         url: '/admin/participants',
         icon: Users
@@ -53,6 +48,18 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
         name: 'Divisions',
         url: '/admin/divisions',
         icon: University
+      }
+    ],
+    adminitems: [
+      {
+        name: 'SPP',
+        url: '/admin/spp',
+        icon: UserRoundCheck
+      },
+      {
+        name: 'Unit Virtual Account',
+        url: '/admin/units-va',
+        icon: CardSim
       }
     ],
     useritems: [
@@ -82,7 +89,11 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
       </SidebarHeader>
       <SidebarContent>
         {/* If-else rendering based on role */}
-        {user.role === 'Admin' ? <NavAdmins items={data.items} /> : USER_ROLES.includes(user.role) ? <NavUsers items={data.useritems} /> : null}
+        {user.role === 'Admin' ? (
+          <NavAdmins items={data.items} adminitems={data.adminitems} />
+        ) : USER_ROLES.includes(user.role) ? (
+          <NavUsers items={data.useritems} />
+        ) : null}
       </SidebarContent>
       <SidebarFooter>
         <NavProfile user={data.user} />

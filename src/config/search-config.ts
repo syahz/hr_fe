@@ -114,3 +114,9 @@ export const SppSearchConfig: SearchConfig = {
     { key: 'year', placeholder: 'Semua Tahun', options: [] }
   ]
 }
+
+export const UnitsVASearchConfig: SearchConfig = {
+  placeholder: 'Cari unit, nomor VA, nama VA...',
+  searchButtonText: 'Search',
+  resetButtonText: 'Reset'
+}

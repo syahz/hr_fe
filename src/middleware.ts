@@ -4,9 +4,9 @@ import type { NextRequest } from 'next/server'
 // Definisikan rute "rumah" berdasarkan peran
 const roleHomeRoutes = {
   Admin: '/admin',
-  Staff: '/user',
+  Staff: '/admin',
   'Manajer Keuangan': '/user',
-  GM: '/user',
+  'General Manager': '/user',
   'General Affair': '/user',
   'Kadiv Keuangan': '/user',
   'Direktur Operasional': '/user',
@@ -23,25 +23,18 @@ const publicRoutes = ['/unauthorized']
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
-  const refreshToken = request.cookies.get('hr_refresh_token')?.value
+  const refreshToken = request.cookies.get('refresh_token')?.value
   const userRole = request.cookies.get('user_role')?.value as keyof typeof roleHomeRoutes | undefined
 
-  // Cek apakah rute saat ini adalah salah satu dari rute yang perlu proteksi
   const isProtectedRoute = [...roleSpecificRoutes, ...sharedProtectedRoutes].some((prefix) => path.startsWith(prefix))
 
-  // =====================================================================
-  // PERUBAHAN UTAMA DI SINI
-  // 1. Jika belum login dan mencoba akses halaman terproteksi -> Redirect ke PORTAL
-  // =====================================================================
   if (!refreshToken && isProtectedRoute) {
-    // Ambil URL Portal dan Client ID dari environment variable
-    // Pastikan Anda sudah set env var ini di .env.local atau config Vercel/Server
-    const portalUrl = process.env.API_PORTAL_URL || 'https://api.portal.bmuconnect.id/api'
-    const clientId = process.env.CLIENT_ID || 'app_feedback'
+    const portalUrl = process.env.API_PORTAL_URL || 'http://api.portal.bmuconnect.id/api'
+    const clientId = process.env.CLIENT_ID || 'app_hrbmu'
 
     // Tentukan mau balik ke mana setelah login di portal (Halaman Frontend Callback Anda)
     // request.nextUrl.origin akan otomatis mengambil http://localhost:3000 atau domain production
-    const redirectUri = encodeURIComponent(`https://hr.bmuconnect.id/auth/callback`)
+    const redirectUri = encodeURIComponent(`http://localhost:3004/auth/callback`)
 
     // Susun URL lengkap ke endpoint authorize Portal
     const ssoRedirectUrl = `${portalUrl}/auth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`

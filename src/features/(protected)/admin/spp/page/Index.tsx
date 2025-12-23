@@ -1,9 +1,10 @@
 'use client'
 
-import { useListSpp } from '@/hooks/api/useSpp'
 import { Button } from '@/components/ui/button'
+import { useListSpp } from '@/hooks/api/useSpp'
 import Link from 'next/link'
-import { SppSearchConfig } from '@/config/search-config'
+import { SppTable } from '../components/table/SppTable'
+import { RoleSearchConfig } from '@/config/search-config'
 import { useSearchFilters } from '@/hooks/useSearchFilter'
 import { SppColumns } from '../components/table/SppColumns'
 import { PlusCircle } from 'lucide-react'
@@ -11,14 +12,13 @@ import { PageContainer } from '@/components/layout/PageContainer'
 import { DataTableSearch } from '@/components/table/DataTableSearch'
 import React, { useState, useMemo } from 'react'
 import { DataTablePagination } from '@/components/table/DataTablePagination'
-import { SppTable } from '@/features/(protected)/admin/spp/components/table/SppTable'
 import { useReactTable, getCoreRowModel, PaginationState, SortingState } from '@tanstack/react-table'
 
-export default function SppPage() {
+export default function UsersPage() {
   const [sorting, setSorting] = useState<SortingState>([])
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 5
   })
 
   const { searchValue, appliedSearch, filters, setSearchValue, handleSearchSubmit, handleClearFilters, handleFilterChange } = useSearchFilters({})
@@ -26,19 +26,24 @@ export default function SppPage() {
   const queryParams = {
     page: pageIndex + 1,
     limit: pageSize,
-    search: appliedSearch
+    search: appliedSearch,
+    sortBy: sorting.length > 0 ? sorting[0].id : undefined,
+    sortOrder: sorting.length > 0 ? (sorting[0].desc ? 'desc' : 'asc') : undefined
   }
 
-  const { data, isLoading, error, isFetching } = useListSpp({ page: queryParams.page, limit: queryParams.limit })
+  const { data, isLoading, error, isFetching } = useListSpp(queryParams)
 
   const defaultData = useMemo(() => [], [])
   const columns = useMemo(() => SppColumns, [])
 
   const table = useReactTable({
-    data: data?.spp || defaultData,
+    data: data?.items || defaultData,
     columns,
     pageCount: data?.pagination?.totalPage ?? -1,
-    state: { pagination: { pageIndex, pageSize }, sorting },
+    state: {
+      pagination: { pageIndex, pageSize },
+      sorting
+    },
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -55,9 +60,9 @@ export default function SppPage() {
   }, [data?.pagination?.totalPage, pageIndex, table])
 
   return (
-    <PageContainer title="SPP">
+    <PageContainer title="Role User">
       <div className="flex w-full gap-4 py-4 items-center justify-between">
-        <h2 className="text-xl font-semibold">Surat Perintah Pembayaran</h2>
+        <h2 className="text-xl font-semibold">Data SPP Unit PT. BMU</h2>
         <Link href={'/admin/spp/create'}>
           <Button size="sm" variant="default" className="flex items-center gap-2">
             <PlusCircle size={16} />
@@ -74,11 +79,13 @@ export default function SppPage() {
           filters={filters}
           onFilterChange={handleFilterChange}
           onClearFilters={handleClearFilters}
-          config={SppSearchConfig}
+          config={RoleSearchConfig}
         />
 
-        <SppTable table={table} isLoading={isLoading} isFetching={isFetching} error={error as Error | undefined} />
+        {/* Panggil RoleTable dengan props yang sudah di-upgrade */}
+        <SppTable table={table} isLoading={isLoading} isFetching={isFetching} error={error} />
 
+        {/* Paginasi sekarang dikontrol oleh table instance */}
         {data?.pagination && (
           <DataTablePagination
             currentPage={data.pagination.page}

@@ -46,7 +46,7 @@ export const SppColumns: ColumnDef<SppResponse>[] = [
   {
     id: 'actions',
     header: 'Actions',
-    cell: ({ row }) => <SppActionsCell spp={row.original} />,
+    cell: ({ row }) => <SppActionsCell SppId={row.original.id} name={row.original.unit.name} />,
     meta: { className: 'sticky right-0 bg-card z-10 w-[120px]' }
   }
 ]

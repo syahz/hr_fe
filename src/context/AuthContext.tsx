@@ -1,26 +1,16 @@
 'use client'
 
-import { DynamicSkeleton } from '@/components/ui/dynamic-skeleton'
 import axiosInstance, { setAccessToken } from '../lib/axios'
+import { DynamicSkeleton } from '@/components/ui/dynamic-skeleton'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-
-type Role =
-  | 'Staff'
-  | 'Manajer Keuangan'
-  | 'GM'
-  | 'General Affair'
-  | 'Kadiv Keuangan'
-  | 'Direktur Operasional'
-  | 'Direktur Keuangan'
-  | 'Direktur Utama'
-  | 'Admin'
 
 interface User {
   id: string
   name: string
   email: string
-  role: Role
+  role: string
+  division: string
   unit: string
 }
 interface AuthContextType {
@@ -47,6 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: data.user.name,
           email: data.user.email,
           role: data.user.role,
+          division: data.user.division,
           unit: data.user.unit
         })
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -78,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setAccessToken(null)
       setUser(null)
-      window.location.href = '/login'
+      window.location.href = '/'
     }
   }
 
