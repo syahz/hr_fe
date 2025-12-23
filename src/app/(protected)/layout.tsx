@@ -48,7 +48,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   // --- PERBAIKAN LOGIKA RENDER ---
   // Tampilkan konten hanya jika sudah selesai loading DAN diotorisasi
   const isUserAuthorized =
-    (pathname.startsWith('/admin') && user.role === 'Admin') ||
+    (pathname.startsWith('/admin') && (user.role === 'Admin' || user.role === 'Staff')) ||
     (pathname.startsWith('/user') && USER_ROLES.includes(user.role)) ||
     pathname.startsWith('/account') // Semua user yang login boleh akses account
 
