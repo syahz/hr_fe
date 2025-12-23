@@ -44,6 +44,7 @@ export type SppResponse = {
   id: string
   spp_letter?: string
   unit: { id: string; name: string; code: string }
+  gaji_basic_salary: number
   upah: number
   bantuan_dana: number
   lembur: number

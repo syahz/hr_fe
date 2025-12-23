@@ -80,6 +80,7 @@ export function EditSppForm({ id, onSuccess }: EditSppFormProps) {
     reValidateMode: 'onChange',
     defaultValues: {
       unit_id: '',
+      gaji_basic_salary: 0,
       month: undefined as unknown as number,
       year: undefined as unknown as number,
       nominal_thp: 0,
@@ -121,6 +122,7 @@ export function EditSppForm({ id, onSuccess }: EditSppFormProps) {
       year: detail.year,
       nominal_thp,
       spp_letter: detail.spp_letter || '',
+      gaji_basic_salary: detail.gaji_basic_salary,
       upah: detail.upah,
       bantuan_dana: detail.bantuan_dana,
       lembur: detail.lembur,
@@ -380,6 +382,7 @@ export function EditSppForm({ id, onSuccess }: EditSppFormProps) {
             {/* Komponen Perusahaan */}
             <div className="space-y-4">
               <h3 className="text-base font-semibold">Komponen Perusahaan</h3>
+              <NumericField control={form.control} name="gaji_basic_salary" label="Gaji Basic Salary" min={0} placeholder="0" />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <NumericField control={form.control} name="nominal_thp" label="Nominal THP" min={0} placeholder="0" />
                 <NumericField control={form.control} name="lembur" label="Lembur" min={0} placeholder="0" />
