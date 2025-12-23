@@ -152,21 +152,22 @@ export function EditSppForm({ id, onSuccess }: EditSppFormProps) {
   // Derived field calculations
   React.useEffect(() => {
     const compute = () => {
-      const { premi_bpjs_kesehatan, iuran_jkk, iuran_jht_tenaga_kerja, iuran_jp_tenaga_kerja, iuran_jht_perusahaan, iuran_jp_perusahaan } =
+      const { premi_bpjs_kesehatan, iuran_jkk, iuran_jkm, iuran_jht_tenaga_kerja, iuran_jht_perusahaan, iuran_jp_perusahaan, iuran_jp_tenaga_kerja } =
         form.getValues()
 
       const base = Number(premi_bpjs_kesehatan) || 0
       form.setValue('bpjs_kesehatan_perusahaan', base * 0.8, { shouldValidate: true, shouldDirty: true })
       form.setValue('bpjs_kesehatan_pekerja', base * 0.2, { shouldValidate: true, shouldDirty: true })
 
-      const sumtk = (Number(iuran_jkk) || 0) + (Number(iuran_jht_tenaga_kerja) || 0) + (Number(iuran_jp_tenaga_kerja) || 0)
+      const sumtk = (Number(iuran_jht_tenaga_kerja) || 0) + (Number(iuran_jp_tenaga_kerja) || 0)
       form.setValue('total_tagihan_tenaga_kerja', sumtk, { shouldValidate: true, shouldDirty: true })
 
-      const sumperusahaan = (Number(iuran_jkk) || 0) + (Number(iuran_jht_perusahaan) || 0) + (Number(iuran_jp_perusahaan) || 0)
+      const sumperusahaan =
+        (Number(iuran_jkk) || 0) + (Number(iuran_jkm) || 0) + (Number(iuran_jht_perusahaan) || 0) + (Number(iuran_jp_perusahaan) || 0)
       form.setValue('total_tagihan_perusahaan', sumperusahaan, { shouldValidate: true, shouldDirty: true })
       form.setValue('total_tagihan_bpjs_ketenagakerjaan', sumtk + sumperusahaan, { shouldValidate: true, shouldDirty: true })
 
-      const sumupah = (Number(form.getValues('nominal_thp')) || 0) + (Number(form.getValues('lembur')) || 0)
+      const sumupah = Number(form.getValues('nominal_thp')) || 0
       form.setValue('upah', sumupah, { shouldValidate: true, shouldDirty: true })
     }
 
@@ -181,8 +182,7 @@ export function EditSppForm({ id, onSuccess }: EditSppFormProps) {
         name === 'iuran_jp_tenaga_kerja' ||
         name === 'iuran_jht_perusahaan' ||
         name === 'iuran_jp_perusahaan' ||
-        name === 'nominal_thp' ||
-        name === 'lembur'
+        name === 'nominal_thp'
       ) {
         compute()
       }

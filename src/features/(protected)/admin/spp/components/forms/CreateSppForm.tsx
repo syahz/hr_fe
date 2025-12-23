@@ -125,7 +125,7 @@ export function CreateSppForm() {
       form.setValue('total_tagihan_perusahaan', sumperusahaan, { shouldValidate: true, shouldDirty: true })
       form.setValue('total_tagihan_bpjs_ketenagakerjaan', sumtk + sumperusahaan, { shouldValidate: true, shouldDirty: true })
 
-      const sumupah = (Number(form.getValues('nominal_thp')) || 0) + (Number(form.getValues('lembur')) || 0)
+      const sumupah = Number(form.getValues('nominal_thp')) || 0
       form.setValue('upah', sumupah, { shouldValidate: true, shouldDirty: true })
     }
 
@@ -141,8 +141,7 @@ export function CreateSppForm() {
         name === 'iuran_jp_tenaga_kerja' ||
         name === 'iuran_jht_perusahaan' ||
         name === 'iuran_jp_perusahaan' ||
-        name === 'nominal_thp' ||
-        name === 'lembur'
+        name === 'nominal_thp'
       ) {
         compute()
       }
