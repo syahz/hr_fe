@@ -89,7 +89,7 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
       </SidebarHeader>
       <SidebarContent>
         {/* If-else rendering based on role */}
-        {user.role === 'Admin' ? (
+        {user.role === 'Admin' || user.role === 'Staff' ? (
           <NavAdmins items={data.items} adminitems={data.adminitems} />
         ) : USER_ROLES.includes(user.role) ? (
           <NavUsers items={data.useritems} />
