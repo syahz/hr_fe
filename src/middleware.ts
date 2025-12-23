@@ -34,7 +34,7 @@ export function middleware(request: NextRequest) {
 
     // Tentukan mau balik ke mana setelah login di portal (Halaman Frontend Callback Anda)
     // request.nextUrl.origin akan otomatis mengambil http://localhost:3000 atau domain production
-    const redirectUri = encodeURIComponent(`http://localhost:3004/auth/callback`)
+    const redirectUri = encodeURIComponent(`https://hr.bmuconnect.id/auth/callback`)
 
     // Susun URL lengkap ke endpoint authorize Portal
     const ssoRedirectUrl = `${portalUrl}/auth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`
